@@ -16,6 +16,7 @@ import android.view.WindowManager;
 
 import com.eagle.locker.R;
 import com.eagle.locker.util.ViewUtils;
+import com.eagle.locker.view.LockScreenView;
 import com.eagle.locker.widget.TouchToUnLockView;
 import com.xdandroid.hellodaemon.IntentWrapper;
 import java.text.SimpleDateFormat;
@@ -39,7 +40,7 @@ import java.util.Random;
 public class LockerActivity extends AppCompatActivity {
 
 
-    private TouchToUnLockView mUnlockView;
+    private LockScreenView mUnlockView;
 
     private Calendar calendar = GregorianCalendar.getInstance();
     private SimpleDateFormat weekFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
@@ -66,26 +67,18 @@ public class LockerActivity extends AppCompatActivity {
 
     private void initView() {
 
-        mUnlockView = ViewUtils.get(this, R.id.tulv_UnlockView);
+        mUnlockView = (LockScreenView) findViewById(R.id.lockscreenview);
 
-        mUnlockView.setOnTouchToUnlockListener(new TouchToUnLockView.OnTouchToUnlockListener() {
-            @Override
-            public void onTouchLockArea() {
-
-            }
-
-            @Override
-            public void onSlidePercent(float percent) {
-
-            }
-
-            @Override
-            public void onSlideToUnlock() {
+        mUnlockView.setOnLockViewClickListener(new LockScreenView.LockViewClickListener() {
+            @Override public void clickRight() {
                 finish();
             }
 
-            @Override
-            public void onSlideAbort() {
+            @Override public void clickLeft() {
+                finish();
+            }
+
+            @Override public void clickHome() {
 
             }
         });
@@ -142,14 +135,12 @@ public class LockerActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-        mUnlockView.startAnim();
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
-        mUnlockView.stopAnim();
     }
 
     public static void startActivity(Context context) {
